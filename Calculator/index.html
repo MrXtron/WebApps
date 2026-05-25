@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colorful Full Screen Calculator</title>
+    <title>Calculator - Xtron</title>
         
-        <link rel="manifest" href="manifest.json">
+        <link rel="manifest" href="https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/manifest.json">
     <meta name="theme-color" content="#007bff">
 
 
@@ -173,7 +173,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/sw.js')
                 .then((reg) => console.log('Service Worker Registered Properly!'))
                 .catch((err) => console.log('Registration Failed!', err));
             });
