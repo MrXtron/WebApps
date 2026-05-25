@@ -4,6 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colorful Full Screen Calculator</title>
+        
+    <link rel="manifest" href='data:application/manifest+json,{
+      "name": "Calculator",
+      "short_name": "Calculator",
+      "start_url": ".",
+      "display": "standalone",
+      "background_color": "#ffffff",
+      "theme_color": "#007bff",
+      "orientation": "portrait",
+      "icons": [
+        {
+          "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+9TXL0Y4OHwAAAABJRU5ErkJggg==",
+          "type": "image/png",
+          "sizes": "192x192"
+        },
+        {
+          "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA
+AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+9TXL0Y4OHwAAAABJRU5ErkJggg==",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+      ]
+    }'>
+
+
     <style>
         * {
             margin: 0;
@@ -164,6 +192,28 @@
     </style>
 </head>
 <body>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            const swCode = 
+                self.addEventListener('install', (e) => {
+                    self.skipWaiting();
+                });
+                self.addEventListener('fetch', (e) => {
+                    e.respondWith(fetch(e.request).catch(() => new Response('Offline Mode')));
+                });
+            ;
+
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(swUrl)
+                .then((reg) => console.log('Service Worker Registered Successfully!'))
+                .catch((err) => console.log('Registration Failed!', err));
+            });
+        }
+    </script>
 
     <div class="calculator">
         <div class="display">
