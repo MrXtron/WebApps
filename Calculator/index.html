@@ -51,7 +51,7 @@
             border: none;
             color: #ffffff;
             text-align: right;
-            font-size: clamp(16px, 12vw, 50px);
+            font-size: min(50px, calc(370px / var(--len, 8)));
             font-weight: 300;
             outline: none;
             white-space: nowrap;
@@ -140,14 +140,8 @@
     <script>
         const display = document.getElementById('display');
 
-        function adjustFontSize() {
-            const len = display.value.length;
-            if (len > 8) {
-                let newSize = 400 / len;
-                display.style.fontSize = Math.max(newSize, 16) + 'px';
-            } else {
-                display.style.fontSize = '50px';
-            }
+        function updateLen() {
+            display.style.setProperty('--len', Math.max(display.value.length, 8));
         }
 
         function appendValue(val) {
@@ -156,12 +150,12 @@
             } else {
                 display.value += val;
             }
-            adjustFontSize();
+            updateLen();
         }
 
         function clearDisplay() {
             display.value = '0';
-            adjustFontSize();
+            updateLen();
         }
 
         function backspace() {
@@ -170,7 +164,7 @@
             } else {
                 display.value = '0';
             }
-            adjustFontSize();
+            updateLen();
         }
 
         function calculate() {
@@ -181,7 +175,7 @@
             } catch (error) {
                 display.value = 'Error';
             }
-            adjustFontSize();
+            updateLen();
         }
 
         if ('serviceWorker' in navigator) {
