@@ -1,21 +1,24 @@
-self.addEventListener('install', function(event) {
-    event.waitUntil(
-        caches.open('v1').then(function(cache) {
-            return cache.addAll([
-                'https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/',
-                'https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/index.html',
-                'https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/manifest.json',
-                'https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/icons/icon-192x192.png',
-                'https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/icons/icon-512x512.png'
-            ]);
-        })
-    );
+const CACHE_NAME = 'xtron-calc-v1';
+const ASSETS = [
+  '/WebApps/Calculator/',
+  '/WebApps/Calculator/index.html',
+  '/WebApps/Calculator/manifest.json',
+  '/WebApps/Calculator/icon.png'
+];
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
+  );
 });
 
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request).then(function(response) {
-            return response || fetch(event.request);
-        })
-    );
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
+    })
+  );
 });
+
