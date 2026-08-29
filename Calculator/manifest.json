@@ -1,21 +1,19 @@
+
 {
-  "name": "Calculator",
+  "id": "/WebApps/Calculator/?utm_source=pwa",
+  "start_url": "/WebApps/Calculator/?utm_source=pwa",
+  "scope": "/WebApps/Calculator/",
   "short_name": "Calculator",
-  "start_url": "https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/index.html",
-  "display": "standalone",
-  "background_color": "#120c1f",
-  "theme_color": "#007bff",
-  "orientation": "portrait",
+  "name": "Xtron Calculator",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "background_color": "#000000",
+  "theme_color": "#E4861F",
+  "display": "standalone",
+  "orientation": "portrait"
 }
