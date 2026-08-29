@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator - Xtron</title>
     
-    <!-- PWA Manifest Link -->
-    <link rel="manifest" href="https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#E4861F">
 
     <style>
@@ -35,28 +34,30 @@
             box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* Input Textbox Container */
         .display-container {
             width: 100%;
-            padding: 10px;
+            height: 80px; 
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
             margin-bottom: 20px;
-            text-align: right;
+            overflow: hidden;
+            padding: 0 10px;
         }
 
-       
         #display {
             width: 100%;
             background: transparent;
             border: none;
             color: #ffffff;
             text-align: right;
-            font-size: 50px;
+            font-size: 50px; 
             font-weight: 300;
             outline: none;
-            overflow: hidden;
             white-space: nowrap;
-            text-overflow: clip;
-            transition: font-size 0.1s ease;
+            overflow: hidden;
+            box-sizing: border-box;
+            transition: font-size 0.05s ease;
         }
 
         .buttons {
@@ -79,7 +80,6 @@
             opacity: 0.7;
         }
 
-       
         .btn-grey {
             background-color: #a5a5a5;
             color: #000000;
@@ -141,11 +141,9 @@
     <script>
         const display = document.getElementById('display');
 
-        // Dynamic Auto-Fit Font Size Function
         function adjustFontSize() {
             const len = display.value.length;
             if (len <= 7) {
-                display.style.fontHeight = "normal";
                 display.style.fontSize = '50px';
             } else if (len > 7 && len <= 10) {
                 display.style.fontSize = '40px';
@@ -153,8 +151,10 @@
                 display.style.fontSize = '30px';
             } else if (len > 14 && len <= 20) {
                 display.style.fontSize = '22px';
-            } else {
+            } else if (len > 20 && len <= 28) {
                 display.style.fontSize = '16px';
+            } else {
+                display.style.fontSize = '12px';
             }
         }
 
@@ -192,10 +192,9 @@
             adjustFontSize();
         }
 
-        // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/sw.js').then(function(reg) {
+                navigator.serviceWorker.register('sw.js').then(function(reg) {
                     console.log('SW Registered');
                 }, function(err) {
                     console.log('SW Failed', err);
