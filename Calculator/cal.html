@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - Xtron</title>
+    
+    <link rel="manifest" href="manifest.js">
+    <meta name="theme-color" content="#007bff">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            /* Prevents unwanted text selection and tap highlight on mobile devices */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            height: 100dvh; 
+            width: 100vw;
+            background: linear-gradient(45deg, #0f0c20, #150030, #2c003e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .calculator {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: rgba(18, 12, 31, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 15px 30px 15px; 
+        }
+
+        .display {
+            width: 100%;
+            height: 22vh;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            /* Smooth scrolling for automatic scroll management */
+            scroll-behavior: smooth; 
+        }
+
+        /* Slim and minimal custom scrollbar styling */
+        .display::-webkit-scrollbar {
+            width: 4px;
+        }
+        .display::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .display .input-history {
+            font-size: 1.3rem;
+            color: #b0a8cf;
+            min-height: 30px;
+            word-wrap: break-word;
+            word-break: break-all;
+            text-align: right;
+            opacity: 0.8;
+        }
+
+        .display .output-result {
+            /* Uses clamp to dynamically scale down the font size as the character count grows */
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 5px;
+            word-wrap: break-word;
+            word-break: break-all;
+            text-align: right;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            transition: font-size 0.1s ease;
+        }
+
+        .buttons-area {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 15px;
+            flex-grow: 1;
+            margin-bottom: 5px;
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .operators-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        button {
+            border: none;
+            border-radius: 24px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        /* Restricts hover effect to pointer devices to avoid sticky touch states on mobile */
+        @media (hover: hover) {
+            button:hover {
+                filter: brightness(1.2);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        button:active {
+            transform: scale(0.92);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #ff0055, #ff5500);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .btn-ac {
+            grid-column: span 2;
+        }
+
+        .btn-number {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-zero, .btn-dot {
+            background: linear-gradient(135deg, #00f260, #0575e6);
+        }
+        
+        .btn-zero {
+            grid-column: span 2;
+        }
+
+        .btn-operator {
+            background: linear-gradient(135deg, #ff9900, #ff5500);
+        }
+
+        .btn-equal {
+            background: linear-gradient(135deg, #7f00ff, #e100ff);
+            box-shadow: 0 0 20px rgba(225, 0, 255, 0.4);
+        }
+        
+        @media (hover: hover) {
+            .btn-equal:hover {
+                box-shadow: 0 0 30px rgba(225, 0, 255, 0.7);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('https://githubusercontent.com')
+                .then((reg) => console.log('Service Worker Registered Properly!'))
+                .catch((err) => console.log('Registration Failed!', err));
+            });
+        }
+    </script>
+
+    <div class="calculator">
+        <!-- Added 'js-display' class for reliable DOM querying in JavaScript -->
+        <div class="display js-display">
+            <div class="input-history" id="history"></div>
+            <div class="output-result" id="result">0</div>
+        </div>
+
+        <div class="buttons-area">
+            <div class="numbers-grid">
+                <button class="btn-clear btn-ac" onclick="clearAll()">AC</button>
+                <button class="btn-clear" onclick="backspace()">C</button>
+                
+                <button class="btn-number" onclick="pressKey('7')">7</button>
+                <button class="btn-number" onclick="pressKey('8')">8</button>
+                <button class="btn-number" onclick="pressKey('9')">9</button>
+                
+                <button class="btn-number" onclick="pressKey('4')">4</button>
+                <button class="btn-number" onclick="pressKey('5')">5</button>
+                <button class="btn-number" onclick="pressKey('6')">6</button>
+                
+                <button class="btn-number" onclick="pressKey('1')">1</button>
+                <button class="btn-number" onclick="pressKey('2')">2</button>
+                <button class="btn-number" onclick="pressKey('3')">3</button>
+                
+                <button class="btn-zero" onclick="pressKey('0')">0</button>
+                <button class="btn-dot" onclick="pressKey('.')">.</button>
+            </div>
+
+            <div class="operators-grid">
+                <button class="btn-operator" onclick="pressKey('/')">÷</button>
+                <button class="btn-operator" onclick="pressKey('*')">×</button>
+                <button class="btn-operator" onclick="pressKey('-')">−</button>
+                <button class="btn-operator" onclick="pressKey('+')">+</button>
+                <button class="btn-equal" onclick="calculateResult()">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const displayContainer = document.querySelector('.js-display');
+        const historyDisplay = document.getElementById('history');
+        const resultDisplay = document.getElementById('result');
+        let currentInput = '';
+        let isCalculated = false;
+
+        const symbolMap = { '+': '+', '-': '-', '*': '×', '/': '÷' };
+
+        function updateDisplay() {
+            let formattedStr = currentInput;
+            Object.keys(symbolMap).forEach(key => {
+                formattedStr = formattedStr.replaceAll(key, symbolMap[key]);
+            });
+            resultDisplay.innerText = formattedStr || '0';
+            
+            // Automatically scrolls the layout to the bottom on fresh inputs
+            autoScrollDisplay();
+        }
+
+        function autoScrollDisplay() {
+            if (displayContainer) {
+                displayContainer.scrollTop = displayContainer.scrollHeight;
+            }
+        }
+
+        function pressKey(val) {
+            // Your math handler evaluation logic goes here
+        }
+        function clearAll() {}
+        function backspace() {}
+        function calculateResult() {}
+    </script>
+</body>
+</html>
