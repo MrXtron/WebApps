@@ -96,6 +96,7 @@
             width: 100%;
             max-width: 100%;
             min-width: 0;
+            min-height: 0;
             max-height: 60%;
             overflow-x: hidden;
             overflow-y: auto;
@@ -108,6 +109,7 @@
             white-space: normal;
             text-align: right;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            scroll-behavior: smooth;
         }
 
         .buttons-area {
@@ -291,6 +293,16 @@
             '/': '÷'
         };
 
+        function scrollToLatest() {
+            requestAnimationFrame(() => {
+                resultDisplay.scrollTop =
+                    resultDisplay.scrollHeight - resultDisplay.clientHeight;
+
+                historyDisplay.scrollTop =
+                    historyDisplay.scrollHeight - historyDisplay.clientHeight;
+            });
+        }
+
         function updateDisplay() {
             let formattedStr = currentInput;
 
@@ -302,6 +314,7 @@
             });
 
             resultDisplay.innerText = formattedStr || '0';
+            scrollToLatest();
         }
 
         function pressKey(val) {
@@ -355,6 +368,8 @@
             currentInput = '';
             historyDisplay.innerText = '';
             resultDisplay.innerText = '0';
+            resultDisplay.scrollTop = 0;
+            historyDisplay.scrollTop = 0;
             isCalculated = false;
         }
 
@@ -401,6 +416,7 @@
                     resultDisplay.innerText = 'Error';
                     currentInput = '';
                     isCalculated = false;
+                    scrollToLatest();
                     return;
                 }
 
@@ -411,15 +427,17 @@
                 resultDisplay.innerText = currentInput;
                 isCalculated = true;
 
+                scrollToLatest();
+
             } catch (error) {
                 resultDisplay.innerText = 'Error';
                 currentInput = '';
                 isCalculated = false;
+                scrollToLatest();
             }
         }
 
-        // keyboard support
-        document.addEventListener('keydown', function (event) {
+        document.addEventListener('keydown', function(event) {
             const key = event.key;
 
             if (/^[0-9.]$/.test(key)) {
@@ -442,14 +460,15 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register(
-                    'sw.js'
-                )
-                .then(() => console.log('Service Worker Registered Properly!'))
-                .catch((err) => console.log('Registration Failed!', err));
+                navigator.serviceWorker.register('sw.js')
+                    .then(() => {
+                        console.log('Service Worker Registered Properly!');
+                    })
+                    .catch((error) => {
+                        console.log('Registration Failed!', error);
+                    });
             });
         }
     </script>
-    
 </body>
 </html>
