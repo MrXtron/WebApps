@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Xtron WebApps - Useful, fast and beautifully designed web applications.">
+    <meta name="theme-color" content="#111827">
+
+    <title>Xtron WebApps</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+            --bg-dark: #080b16;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+            --text-main: #ffffff;
+            --text-light: #aeb7d0;
+            --primary: #8b5cf6;
+            --secondary: #06b6d4;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at top left, rgba(139, 92, 246, 0.25), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(6, 182, 212, 0.18), transparent 35%),
+                var(--bg-dark);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: -120px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.12);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            right: -120px;
+            bottom: 10%;
+            border-radius: 50%;
+            background: rgba(6, 182, 212, 0.12);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+        header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 28px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+        }
+
+        .github-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: 0.25s ease;
+        }
+
+        .github-link:hover {
+            color: white;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 70px 0 80px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 15px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 50px;
+            color: #d8c9ff;
+            background: rgba(139, 92, 246, 0.12);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            max-width: 800px;
+            margin: auto;
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            line-height: 1.05;
+            letter-spacing: -2px;
+        }
+
+        .gradient-text {
+            color: transparent;
+            background: linear-gradient(90deg, #a78bfa, #22d3ee);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .hero p {
+            max-width: 620px;
+            margin: 24px auto 0;
+            color: var(--text-light);
+            font-size: 1.08rem;
+            line-height: 1.7;
+        }
+
+        .apps-section {
+            position: relative;
+            z-index: 1;
+            padding-bottom: 75px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 1.6rem;
+        }
+
+        .section-heading span {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 22px;
+        }
+
+        .app-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 275px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: var(--card-bg);
+            backdrop-filter: blur(18px);
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .app-card::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            top: -65px;
+            right: -65px;
+            border-radius: 50%;
+            background: var(--app-color, var(--primary));
+            opacity: 0.28;
+            filter: blur(20px);
+        }
+
+        .app-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(167, 139, 250, 0.65);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-icon {
+            position: relative;
+            z-index: 1;
+            width: 62px;
+            height: 62px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 22px;
+            border-radius: 19px;
+            font-size: 1.9rem;
+            background: linear-gradient(135deg, var(--app-color, var(--primary)), #ec4899);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .app-card h3 {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 10px;
+            font-size: 1.35rem;
+        }
+
+        .app-card p {
+            position: relative;
+            z-index: 1;
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .open-button {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: auto;
+            padding: 13px 18px;
+            border-radius: 13px;
+            color: white;
+            background: linear-gradient(135deg, #7c3aed, #0891b2);
+            text-decoration: none;
+            font-weight: bold;
+            transition: filter 0.25s ease, transform 0.25s ease;
+        }
+
+        .open-button:hover {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+        }
+
+        .coming-soon {
+            opacity: 0.7;
+        }
+
+        .coming-soon .open-button {
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 25px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 0;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .logo-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
+            }
+
+            .github-link {
+                font-size: 0.82rem;
+            }
+
+            .hero {
+                padding: 55px 0 60px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .hero p {
+                font-size: 0.98rem;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 7px;
+            }
+
+            .app-card {
+                min-height: 255px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <a href="./index.html" class="logo">
+                <span class="logo-icon">⚡</span>
+                <span>Xtron WebApps</span>
+            </a>
+
+            <a
+                class="github-link"
+                href="https://mrxtron.github.io/WebApps/"
+                target="_blank"
+                rel="noopener noreferrer">
+                View on GitHub ↗
+            </a>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="badge">Fast • Simple • Useful</div>
+
+                <h1>
+                    Powerful tools,
+                    <span class="gradient-text">made simple.</span>
+                </h1>
+
+                <p>
+                    Welcome to Xtron WebApps. Explore a collection of
+                    lightweight, fast and easy-to-use web applications.
+                </p>
+            </section>
+
+            <section class="apps-section">
+                <div class="section-heading">
+                    <h2>Available WebApps</h2>
+                    <span>Choose an app to get started</span>
+                </div>
+
+                <div class="apps-grid">
+
+                    <!-- Calculator App -->
+                    <article class="app-card" style="--app-color: #06b6d4;">
+                        <div class="app-icon">🧮</div>
+
+                        <h3>Calculator</h3>
+
+                        <p>
+                            A beautiful and responsive calculator for
+                            quick and easy calculations.
+                        </p>
+
+                        <a href="./Calculator/" class="open-button">
+                            Open Calculator →
+                        </a>
+                    </article>
+
+                    <!-- Future App -->
+                    <article class="app-card coming-soon" style="--app-color: #8b5cf6;">
+                        <div class="app-icon">🛠️</div>
+
+                        <h3>More Apps</h3>
+
+                        <p>
+                            New useful web applications are coming soon.
+                            Stay tuned for future updates.
+                        </p>
+
+                        <span class="open-button">
+                            Coming Soon
+                        </span>
+                    </article>
+
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            © <span id="year"></span> Xtron WebApps. Built with HTML, CSS and JavaScript.
+        </footer>
+
+    </div>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  
+</body>
+</html>
