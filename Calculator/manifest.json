@@ -4,7 +4,7 @@
   "start_url": "/WebApps/Calculator/?utm_source=pwa",
   "scope": "/WebApps/Calculator/",
   "short_name": "Calculator",
-  "name": "Xtron Calculator",
+  "name": "XtroCalc",
   "icons": [
     {
       "src": "icon-512.png",
