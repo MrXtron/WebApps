@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator - Xtron</title>
-    
-    <link rel="manifest" href="manifest.js">
+
+    <link rel="manifest" href="https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/manifest.json">
     <meta name="theme-color" content="#007bff">
 
     <style>
@@ -14,8 +14,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            /* Prevents unwanted text selection and tap highlight on mobile devices */
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -23,7 +21,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            height: 100dvh; 
+            height: 100dvh;
             width: 100vw;
             background: linear-gradient(45deg, #0f0c20, #150030, #2c003e);
             background-size: 400% 400%;
@@ -32,9 +30,17 @@
         }
 
         @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .calculator {
@@ -45,12 +51,16 @@
             backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
-            padding: 20px 15px 30px 15px; 
+            padding: 20px 15px 30px 15px;
+            min-width: 0;
+            min-height: 0;
         }
 
         .display {
             width: 100%;
             height: 22vh;
+            min-width: 0;
+            min-height: 0;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 24px;
             display: flex;
@@ -60,42 +70,43 @@
             padding: 20px;
             margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
-            overflow-y: auto;
-            /* Smooth scrolling for automatic scroll management */
-            scroll-behavior: smooth; 
-        }
-
-        /* Slim and minimal custom scrollbar styling */
-        .display::-webkit-scrollbar {
-            width: 4px;
-        }
-        .display::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
         .display .input-history {
-            font-size: 1.3rem;
-            color: #b0a8cf;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             min-height: 30px;
-            word-wrap: break-word;
+            max-height: 45%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: #b0a8cf;
+            overflow-wrap: anywhere;
             word-break: break-all;
+            white-space: normal;
             text-align: right;
             opacity: 0.8;
         }
 
         .display .output-result {
-            /* Uses clamp to dynamically scale down the font size as the character count grows */
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            max-height: 60%;
+            overflow-y: auto;
+            overflow-x: hidden;
             font-size: clamp(2rem, 8vw, 3.5rem);
             font-weight: bold;
             color: #ffffff;
             margin-top: 5px;
-            word-wrap: break-word;
+            overflow-wrap: anywhere;
             word-break: break-all;
+            white-space: normal;
             text-align: right;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            transition: font-size 0.1s ease;
         }
 
         .buttons-area {
@@ -103,6 +114,7 @@
             grid-template-columns: 3fr 1fr;
             gap: 15px;
             flex-grow: 1;
+            min-height: 0;
             margin-bottom: 5px;
         }
 
@@ -110,12 +122,16 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
+            min-width: 0;
+            min-height: 0;
         }
 
         .operators-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 15px;
+            min-width: 0;
+            min-height: 0;
         }
 
         button {
@@ -131,14 +147,13 @@
             justify-content: center;
             align-items: center;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        /* Restricts hover effect to pointer devices to avoid sticky touch states on mobile */
-        @media (hover: hover) {
-            button:hover {
-                filter: brightness(1.2);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            }
+        button:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
         }
 
         button:active {
@@ -148,7 +163,7 @@
 
         .btn-clear {
             background: linear-gradient(135deg, #ff0055, #ff5500);
-            text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
         }
 
         .btn-ac {
@@ -157,14 +172,15 @@
 
         .btn-number {
             background: linear-gradient(135deg, #00b4db, #0083b0);
-            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .btn-zero, .btn-dot {
+        .btn-zero,
+        .btn-dot {
             background: linear-gradient(135deg, #00f260, #0575e6);
         }
-        
+
         .btn-zero {
             grid-column: span 2;
         }
@@ -177,29 +193,53 @@
             background: linear-gradient(135deg, #7f00ff, #e100ff);
             box-shadow: 0 0 20px rgba(225, 0, 255, 0.4);
         }
-        
-        @media (hover: hover) {
-            .btn-equal:hover {
-                box-shadow: 0 0 30px rgba(225, 0, 255, 0.7);
+
+        .btn-equal:hover {
+            box-shadow: 0 0 30px rgba(225, 0, 255, 0.7);
+        }
+
+        @media (max-height: 600px) {
+            .calculator {
+                padding: 10px 10px 15px 10px;
+            }
+
+            .display {
+                height: 20vh;
+                padding: 12px;
+                margin-bottom: 10px;
+                border-radius: 18px;
+            }
+
+            .buttons-area,
+            .numbers-grid,
+            .operators-grid {
+                gap: 8px;
+            }
+
+            button {
+                font-size: 1.6rem;
+                border-radius: 16px;
             }
         }
     </style>
 </head>
+
 <body>
-    
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('https://githubusercontent.com')
-                .then((reg) => console.log('Service Worker Registered Properly!'))
+                navigator.serviceWorker.register(
+                    'https://raw.githubusercontent.com/MrXtron/WebApps/refs/heads/main/Calculator/sw.js'
+                )
+                .then(() => console.log('Service Worker Registered Properly!'))
                 .catch((err) => console.log('Registration Failed!', err));
             });
         }
     </script>
 
     <div class="calculator">
-        <!-- Added 'js-display' class for reliable DOM querying in JavaScript -->
-        <div class="display js-display">
+        <div class="display">
             <div class="input-history" id="history"></div>
             <div class="output-result" id="result">0</div>
         </div>
@@ -208,19 +248,19 @@
             <div class="numbers-grid">
                 <button class="btn-clear btn-ac" onclick="clearAll()">AC</button>
                 <button class="btn-clear" onclick="backspace()">C</button>
-                
+
                 <button class="btn-number" onclick="pressKey('7')">7</button>
                 <button class="btn-number" onclick="pressKey('8')">8</button>
                 <button class="btn-number" onclick="pressKey('9')">9</button>
-                
+
                 <button class="btn-number" onclick="pressKey('4')">4</button>
                 <button class="btn-number" onclick="pressKey('5')">5</button>
                 <button class="btn-number" onclick="pressKey('6')">6</button>
-                
+
                 <button class="btn-number" onclick="pressKey('1')">1</button>
                 <button class="btn-number" onclick="pressKey('2')">2</button>
                 <button class="btn-number" onclick="pressKey('3')">3</button>
-                
+
                 <button class="btn-zero" onclick="pressKey('0')">0</button>
                 <button class="btn-dot" onclick="pressKey('.')">.</button>
             </div>
@@ -236,37 +276,159 @@
     </div>
 
     <script>
-        const displayContainer = document.querySelector('.js-display');
         const historyDisplay = document.getElementById('history');
         const resultDisplay = document.getElementById('result');
+
         let currentInput = '';
         let isCalculated = false;
 
-        const symbolMap = { '+': '+', '-': '-', '*': '×', '/': '÷' };
+        const symbolMap = {
+            '+': '+',
+            '-': '-',
+            '*': '×',
+            '/': '÷'
+        };
 
         function updateDisplay() {
             let formattedStr = currentInput;
+
             Object.keys(symbolMap).forEach(key => {
                 formattedStr = formattedStr.replaceAll(key, symbolMap[key]);
             });
-            resultDisplay.innerText = formattedStr || '0';
-            
-            // Automatically scrolls the layout to the bottom on fresh inputs
-            autoScrollDisplay();
-        }
 
-        function autoScrollDisplay() {
-            if (displayContainer) {
-                displayContainer.scrollTop = displayContainer.scrollHeight;
-            }
+            resultDisplay.innerText = formattedStr || '0';
         }
 
         function pressKey(val) {
-            // Your math handler evaluation logic goes here
+            const operators = ['+', '-', '*', '/'];
+            const isOperator = operators.includes(val);
+
+            if (isCalculated) {
+                if (!isOperator) {
+                    currentInput = '';
+                    historyDisplay.innerText = '';
+                } else {
+                    historyDisplay.innerText = currentInput;
+                }
+
+                isCalculated = false;
+            }
+
+            if (currentInput === '' && isOperator && val !== '-') {
+                return;
+            }
+
+            if (isOperator) {
+                const lastChar = currentInput.slice(-1);
+
+                if (operators.includes(lastChar)) {
+                    currentInput = currentInput.slice(0, -1) + val;
+                    updateDisplay();
+                    return;
+                }
+            } else if (val === '.') {
+                const parts = currentInput.split(/[\+\-\*\/]/);
+                const currentNumberPart = parts[parts.length - 1];
+
+                if (currentNumberPart.includes('.')) {
+                    return;
+                }
+            }
+
+            if (currentInput === '0' && val !== '.' && !isOperator) {
+                currentInput = val;
+            } else {
+                currentInput += val;
+            }
+
+            updateDisplay();
         }
-        function clearAll() {}
-        function backspace() {}
-        function calculateResult() {}
+
+        function clearAll() {
+            currentInput = '';
+            historyDisplay.innerText = '';
+            resultDisplay.innerText = '0';
+            isCalculated = false;
+        }
+
+        function backspace() {
+            if (isCalculated) {
+                clearAll();
+                return;
+            }
+
+            currentInput = currentInput.slice(0, -1);
+            updateDisplay();
+        }
+
+        function calculateResult() {
+            if (!currentInput) {
+                return;
+            }
+
+            const operators = ['+', '-', '*', '/'];
+
+            if (operators.includes(currentInput.slice(-1))) {
+                currentInput = currentInput.slice(0, -1);
+            }
+
+            try {
+                const rawInput = currentInput;
+
+                let formattedHistory = currentInput;
+
+                Object.keys(symbolMap).forEach(key => {
+                    formattedHistory = formattedHistory.replaceAll(
+                        key,
+                        symbolMap[key]
+                    );
+                });
+
+                historyDisplay.innerText = formattedHistory + ' =';
+
+                const calculation = Function(
+                    '"use strict";return (' + rawInput + ')'
+                )();
+
+                if (!isFinite(calculation)) {
+                    resultDisplay.innerText = 'Error';
+                    currentInput = '';
+                    return;
+                }
+
+                const roundedCalculation =
+                    Math.round(calculation * 1000000) / 1000000;
+
+                currentInput = roundedCalculation.toString();
+                resultDisplay.innerText = currentInput;
+                isCalculated = true;
+
+            } catch (error) {
+                resultDisplay.innerText = 'Error';
+                currentInput = '';
+            }
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function (event) {
+            const key = event.key;
+
+            if (/^[0-9.]$/.test(key)) {
+                pressKey(key);
+            } else if (['+', '-', '*', '/'].includes(key)) {
+                pressKey(key);
+            } else if (key === 'Enter' || key === '=') {
+                calculateResult();
+            } else if (key === 'Backspace') {
+                backspace();
+            } else if (
+                key === 'Escape' ||
+                key.toLowerCase() === 'c'
+            ) {
+                clearAll();
+            }
+        });
     </script>
+
 </body>
 </html>
