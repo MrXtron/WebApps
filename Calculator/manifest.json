@@ -1,7 +1,7 @@
 
 {
-  "id": "/WebApps/Calculator/?utm_source=pwa",
-  "start_url": "/WebApps/Calculator/?utm_source=pwa",
+  "id": "/WebApps/Calculator/",
+  "start_url": "/WebApps/Calculator/",
   "scope": "/WebApps/Calculator/",
   "short_name": "Calculator",
   "name": "XtroCalc",
