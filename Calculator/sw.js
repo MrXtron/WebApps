@@ -1,4 +1,4 @@
-const CACHE_NAME = 'xtron-calc-v1';
+const CACHE_NAME = 'XtroCalc-v1';
 const ASSETS = [
   '/WebApps/Calculator/',
   '/WebApps/Calculator/index.html',
